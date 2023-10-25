@@ -1,0 +1,96 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='slim' %}
+    <title>{% block title %} Главная страница {% endblock %}</title>
+</head>
+<body>
+
+<div>
+
+    <div class="container-fluid container-x">
+        {% block task %}
+
+        {% endblock %}
+
+
+        {% if user.is_authenticated %}
+
+            <div class="header">
+            <a  class="link" href="{% url 'home' %}">Главная</a>
+            <a  class="link" href="{% url 'about' %}">О нас</a>
+                <a class="link " href="#" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Профиль</a>
+                <div class="dropdown-menu link">
+                    <a class="navbar-brand nav_link" href="{% url 'profile' %}">Мои Заявки</a>
+                    <a class="navbar-brand nav_link" href="{% url 'profile_change' %}">Изменить личные данные</a>
+                    <a class="navbar-brand nav_link" href="{% url 'password_change' %}">Изменить пароль</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="navbar-brand nav_link" href="{% url 'logout' %}">Выйти</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="navbar-brand nav_link" href="{% url 'profile_delete' %}">Удалить</a>
+                </div>
+            </div>
+
+
+        {% else %}
+            <div class="link">
+            <a  class="link" href="{% url 'home' %}">Главная</a>
+            <a class="link" href="{% url 'register' %}">Регистрация</a>
+            <a class="link" href="{% url 'login' %}">Вход</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="long"></div>
+    <div class="row row2">
+
+        <div class="container">
+            {% bootstrap_messages %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    {% if message.tags == 'error' %}
+
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            A simple primary alert-check it out!
+                        </div>
+                    {% endif %}
+
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+
+</div>
+<div class="container">{% block contend %}{% endblock %}
+</div>
+
+{% block css %}
+
+{% endblock %}
+
+</body>
+</html>

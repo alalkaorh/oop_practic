@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% load bootstrap4 %}
+{% load thumbnail %}
+{% load static %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <div class="content">
+        <h2 class="rut">Последние 4 выполненных заявки:</h2>
+        <p class="text-right font-italic">Количество заявок, находящихся в статусе «Принято в работу»: {{ counter }}</p>
+    </div>
+
+    {% if bbs %}
+        <ul class="list-unstyled">
+            {% for bb in bbs %}
+                <li class="blocks">
+                    {% url 'detail' rubric_pk=rubric.pk pk=bb.id as url %}
+                    <a class="text_ww" href="{{ url }}{{ all }}">
+                        {% if bb.image %}
+                            <img class="mr-3" src="{% thumbnail bb.image 'default' %}">
+                        {% else %}
+                            <img class="mr-3" src="{% static 'rubric/empty.jpg' %}">
+                        {% endif %}
+                    </a>
+                    <div class="media-body">
+                        <h3><a class="text_ww" href="{{ url }}/{{bb.rubric.id}}/{{ bb.pk }}">{{ bb.title }}</a></h3>
+                        <div class="text_ww">{{ bb.content }}</div>
+                        <p class="text_as">Cтатус {{ bb.status }}</p>
+                        <p class="text_as">{{ bb.created_at }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h5 class="logo">Дизайн интерьера</h5>
+{% endblock %}
+
+
